@@ -162,3 +162,12 @@ def add_neighbourhood_column(gdf: geopandas.GeoDataFrame, nbhood_gdf: geopandas.
     gdf_copy['Neighbourhood'] = joined['index_right']
 
     return gdf_copy
+
+
+
+def get_overlay(df_1: geopandas.GeoDataFrame, name_1: str, df_2: geopandas.GeoDataFrame, name_2: str) -> geopandas.GeoDataFrame:
+    names    = pandas.Series(([name_1] * len(df_1)) + ([name_2] * len(df_2)), name = 'Name')
+    geometry = pandas.concat([df_1.to_crs(CRS).geometry, df_2.to_crs(CRS).geometry])
+    geometry.index = names.index
+
+    return geopandas.GeoDataFrame(names, geometry=geometry)
