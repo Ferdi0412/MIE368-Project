@@ -5,6 +5,27 @@ import geopandas
 
 CRS = "urn:ogc:def:crs:OGC:1.3:CRS84"
 
+
+
+def get_data_path(file_name: str):
+    """Returns path to store context data."""
+    curr_dir = os.path.dirname(__file__)
+    main_dir = os.path.dirname(curr_dir)
+    data_dir = os.path.join(main_dir, 'context_data')
+    return os.path.join(data_dir, file_name)
+
+
+
+def store_context_data(gdf: geopandas.GeoDataFrame, file_name: str) -> None:
+    """Stores a geopandas.GeoDataFrame to a .csv file."""
+    file_path = get_data_path(file_name)
+
+    pandas.DataFrame(gdf.to_crs(CRS)).to_csv(file_path)
+
+    return
+
+
+
 def open_geopandas_csv(file_path: str, **kwargs) -> geopandas.GeoDataFrame:
     ## Open the .csv using pandas
     df = pandas.read_csv(file_path, **kwargs)
